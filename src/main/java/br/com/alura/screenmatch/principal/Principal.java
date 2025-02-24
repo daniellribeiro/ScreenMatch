@@ -1,11 +1,11 @@
 package br.com.alura.screenmatch.principal;
 
-import br.com.alura.screenmatch.model.DadosEpisodio;
-import br.com.alura.screenmatch.model.DadosSerie;
-import br.com.alura.screenmatch.model.DadosTemporada;
+import br.com.alura.screenmatch.model.*;
 import br.com.alura.screenmatch.service.ConsumoAPI;
 import br.com.alura.screenmatch.service.ConverteDados;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -33,29 +33,28 @@ public class Principal {
             temporadas.add(dadosTemporada);
         }
 
-        //temporadas.forEach(t -> {
-        //    System.out.println("Temporada " + t.numero());
-        //    t.episodios().forEach(e -> System.out.println(e.numero() +
-        //            " ==> " + e.titulo()));
-        //});
-
         List<DadosEpisodio> dadosEpisodios = temporadas.stream()
                 .flatMap(t -> t.episodios().stream())
                 .toList();
 
-        dadosEpisodios.stream()
-                .filter(e -> !e.avaliacao().equalsIgnoreCase("N/A"))
-                .sorted(Comparator.comparing(DadosEpisodio::avaliacao).reversed())
-                .limit(5)
-                .forEach(System.out::println);
+        System.out.println("LISTA EPISODIOS DA TEMPORADA: ");
+        List<Episodio> episodios = temporadas.stream().flatMap(t -> t.episodios().stream().
+                map(d -> new Episodio(t.numero(),d))).toList();
 
-        //for(int i = 0; i < temporadas.size(); i++){
-        //    System.out.println("Temporada: " + (i+1));
-        //    List<DadosEpisodio> episodiosTemporada = temporadas.get(i).episodios();
-        //    for(int j = 0; j < episodiosTemporada.size(); j++){
-        //        System.out.println(episodiosTemporada.get(j).numero() + " => "
-        //                + episodiosTemporada.get(j).titulo());
-        //    }
-        //}
+        episodios.forEach(System.out::println);
+
+        System.out.println("A partir de que ano voce deseja ver os episodios ");
+        var ano = leitura.nextInt();
+
+        LocalDate dataBusca = LocalDate.of(ano,1,1);
+
+        DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+        episodios.stream().filter(e -> e.getDataLancamento() != null && e.getDataLancamento().isAfter(dataBusca))
+        .forEach(e -> {
+            System.out.println(" Temporada: " + e.getTemporada() +
+                    " Episodio: " + e.getTitulo() +
+                    " Data Lancamento " + e.getDataLancamento().format(formatador));
+        });
     }
 }

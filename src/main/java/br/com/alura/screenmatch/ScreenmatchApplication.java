@@ -20,15 +20,6 @@ public class ScreenmatchApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		Principal principal = new Principal();
-		//System.out.println(principal.exibeMenu());
 		principal.exibeTemporadas();
-
-		//List<String> nomes = Arrays.asList("Jacque","Iasmin","Paulo","Rodrigo","Nico");
-		//nomes.stream()
-		//		.sorted()
-		//		.limit(3)
-		//		.filter(n -> n.startsWith("N"))
-		//		.map(String::toUpperCase)
-		//		.forEach(System.out::println);
 	}
 }
