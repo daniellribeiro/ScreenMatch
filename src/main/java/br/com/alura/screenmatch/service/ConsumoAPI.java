@@ -1,8 +1,5 @@
 package br.com.alura.screenmatch.service;
 
-import br.com.alura.screenmatch.exception.FilmeNaoEncontradoException;
-import com.fasterxml.jackson.databind.util.JSONPObject;
-
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
